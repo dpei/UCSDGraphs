@@ -17,7 +17,9 @@ import util.GraphLoader;
  * The edges of the graph are not labeled.
  * Representation of edges is left abstract.
  * 
- * @author UCSD MOOC development team and YOU
+ * @author UCSD MOOC development team
+ * @modified by Dong Pei
+ * @modified on June 2017
  * 
  */
 
@@ -121,7 +123,7 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
+		
 		return null;
 	}
 	
