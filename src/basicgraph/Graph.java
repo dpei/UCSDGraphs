@@ -3,6 +3,7 @@ package basicgraph;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -123,8 +124,18 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
+		// return list of degrees for all vertices
+		List<Integer> retList= new ArrayList<Integer>();
+		for (int i=0; i<numVertices; i++){
+			int a = getNeighbors(i).size();
+			int b = getInNeighbors(i).size();
+			retList.add(a+b);
+		}
 		
-		return null;
+		// sort from small and reverse it 
+		Collections.sort(retList);
+		Collections.reverse(retList);
+		return retList;
 	}
 	
 	/**
@@ -252,6 +263,13 @@ public abstract class Graph {
 		System.out.println("\n****");
 		
 		// You can test with real road data here.  Use the data files in data/maps
+		System.out.println("****");
+		System.out.println("Dong test: Roads / intersections for UCSD map:");
+		GraphAdjList graphFromFile2 = new GraphAdjList();
+		GraphLoader.loadRoadMap("data/maps/ucsd.map", graphFromFile2);
+		System.out.println(graphFromFile2);
+		
+		
 		
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
@@ -264,7 +282,7 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
-
+		System.out.println(graphFromFile.getDistance2(3));
 
 		
 	}
