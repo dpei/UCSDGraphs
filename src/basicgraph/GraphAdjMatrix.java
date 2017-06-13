@@ -107,20 +107,31 @@ public class GraphAdjMatrix extends Graph {
 	 */	
 	public List<Integer> getDistance2(int v) {
 		int numV = getNumVertices();
-        int [][] result = new int[numV][numV];
-        for (int i = 0; i < numV; i++) { 
-            for (int j = 0; j < numV; j++) { 
-                for (int k = 0; k < numV; k++) { 
-                    result[i][j] += adjMatrix[i][k] * adjMatrix[k][j];
-                }
-            }
-        }
-		
+        int [][] result = multiply(adjMatrix);
+        
         ArrayList<Integer> retList = new ArrayList<Integer>();
         for (int i=0; i<numV; i++){
         	
+        	for (Integer numD= new Integer (result[v][i]); numD>0; numD--){
+        	
+        		retList.add(i);
+        	}
         }
-		return null;
+		return retList;
+	}
+	
+	// helper method used for getDistance2(int v);
+	private int [][] multiply(int [][] matrix){
+		int numV = matrix.length;
+		int [][] result = new int[numV][numV];
+		for (int i = 0; i < numV; i++) { 
+            for (int j = 0; j < numV; j++) { 
+                for (int k = 0; k < numV; k++) { 
+                    result[i][j] += matrix[i][k] * matrix[k][j];
+                }
+            }
+        }
+		return result;
 	}
 	
 	/**

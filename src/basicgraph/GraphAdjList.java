@@ -1,6 +1,7 @@
 package basicgraph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -79,7 +80,7 @@ public class GraphAdjList extends Graph {
 		for (int u : adjListsMap.keySet()) {
 			//iterate through all edges in u's adjacency list and 
 			//add u to the inNeighbor list of v whenever an edge
-			//with startpoint u has endpoint v.
+			//with start point u has end point v.
 			for (int w : adjListsMap.get(u)) {
 				if (v == w) {
 					inNeighbors.add(u);
@@ -99,15 +100,16 @@ public class GraphAdjList extends Graph {
 	 */		
 	 public List<Integer> getDistance2(int v) {
 		 List<Integer> retVertices = new ArrayList<Integer>();
+		 
 		 ArrayList<Integer> oneStep = adjListsMap.get(v);
 		 for (int i : oneStep){
 			 ArrayList<Integer> twoStep = adjListsMap.get(i);
 			 retVertices.addAll(twoStep);
 		 }
-		 
+		 Collections.sort(retVertices);
 		 //retVertices.remove(Integer.valueOf(v));
-		 //return retVertices;
-		 return null;
+		 return retVertices;
+		 
 	}
 	
 	/**

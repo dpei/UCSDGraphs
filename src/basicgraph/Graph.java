@@ -269,8 +269,6 @@ public abstract class Graph {
 		GraphLoader.loadRoadMap("data/maps/ucsd.map", graphFromFile2);
 		System.out.println(graphFromFile2);
 		
-		
-		
 		System.out.println("Flight data:");
 		GraphAdjList airportGraph = new GraphAdjList();
 		GraphLoader.loadRoutes("data/airports/routesUA.dat", airportGraph);
@@ -280,10 +278,10 @@ public abstract class Graph {
 		
 		//For testing Part 2 functionality
 		// Test your distance2 code here.
-		System.out.println("Testing distance-two methods on sample graphs...");
-		System.out.println("Goal: implement method using two approaches.");
+		System.out.println("Testing distance-two methods (GraphAdjList) on sample graphs...");
 		System.out.println(graphFromFile.getDistance2(3));
-
+		
+		System.out.println("Testing distance-two methods in (GraphAdjMatrix) on sample graphs...");
 		
 	}
 }
