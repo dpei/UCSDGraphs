@@ -8,6 +8,7 @@
 package roadgraph;
 
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -17,20 +18,24 @@ import util.GraphLoader;
 
 /**
  * @author UCSD MOOC development team and YOU
- * 
+ * @modified by Dong Pei
+ * @modified on June 2017
  * A class which represents a graph of geographic locations
  * Nodes in the graph are intersections between 
  *
  */
 public class MapGraph {
 	//TODO: Add your member variables here in WEEK 3
-	
+	private int numVertices;
+	private int numEdges;
 	
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph()
 	{
+		numVertices = 0;
+		numEdges = 0;
 		// TODO: Implement in this constructor in WEEK 3
 	}
 	
@@ -41,7 +46,7 @@ public class MapGraph {
 	public int getNumVertices()
 	{
 		//TODO: Implement this method in WEEK 3
-		return 0;
+		return numVertices;
 	}
 	
 	/**
@@ -51,7 +56,9 @@ public class MapGraph {
 	public Set<GeographicPoint> getVertices()
 	{
 		//TODO: Implement this method in WEEK 3
-		return null;
+		Set<GeographicPoint> retSet = new HashSet<GeographicPoint>();
+		
+		return retSet;
 	}
 	
 	/**
@@ -61,7 +68,7 @@ public class MapGraph {
 	public int getNumEdges()
 	{
 		//TODO: Implement this method in WEEK 3
-		return 0;
+		return numEdges;
 	}
 
 	
