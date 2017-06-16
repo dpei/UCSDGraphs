@@ -8,8 +8,11 @@
 package roadgraph;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -28,6 +31,8 @@ public class MapGraph {
 	//TODO: Add your member variables here in WEEK 3
 	private int numVertices;
 	private int numEdges;
+	private Map<Integer,ArrayList<Integer>> adjListsMap;
+	
 	
 	/** 
 	 * Create a new empty MapGraph 
@@ -36,6 +41,7 @@ public class MapGraph {
 	{
 		numVertices = 0;
 		numEdges = 0;
+		adjListsMap = new HashMap<Integer,ArrayList<Integer>>();
 		// TODO: Implement in this constructor in WEEK 3
 	}
 	
@@ -45,7 +51,7 @@ public class MapGraph {
 	 */
 	public int getNumVertices()
 	{
-		//TODO: Implement this method in WEEK 3
+
 		return numVertices;
 	}
 	
@@ -67,7 +73,6 @@ public class MapGraph {
 	 */
 	public int getNumEdges()
 	{
-		//TODO: Implement this method in WEEK 3
 		return numEdges;
 	}
 
@@ -83,6 +88,18 @@ public class MapGraph {
 	public boolean addVertex(GeographicPoint location)
 	{
 		// TODO: Implement this method in WEEK 3
+		double x = location.getX();
+		double y = location.getY();
+		
+		/* point is there already// 
+		if (location == null | ){
+			return false;
+		} else {
+			MyVertice Veretex = new MyVertice(x, y);
+			// add
+			return ture;
+		}
+		*/
 		return false;
 	}
 	
@@ -203,16 +220,29 @@ public class MapGraph {
 		
 		return null;
 	}
-
 	
+	
+	public String toString() {
+		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
+		
+		return s;
+	}
 	
 	public static void main(String[] args)
 	{
+		
+		
+		
+		
+		
+		
 		System.out.print("Making a new map...");
 		MapGraph firstMap = new MapGraph();
 		System.out.print("DONE. \nLoading the map...");
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", firstMap);
 		System.out.println("DONE.");
+		
+		System.out.println(firstMap);
 		
 		// You can use this method for testing.  
 		
