@@ -1,7 +1,7 @@
 package roadgraph;
 
 /**A Vertice class used for MapGraph
- * 
+ * Not used yet
  * 
  * 
  * @created: June 2017

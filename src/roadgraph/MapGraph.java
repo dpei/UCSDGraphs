@@ -31,7 +31,7 @@ public class MapGraph {
 	//TODO: Add your member variables here in WEEK 3
 	private int numVertices;
 	private int numEdges;
-	private Map<Integer,ArrayList<Integer>> adjListsMap;
+	private HashMap<GeographicPoint, ArrayList<GeographicPoint>> adjListsMap;
 	
 	
 	/** 
@@ -41,7 +41,7 @@ public class MapGraph {
 	{
 		numVertices = 0;
 		numEdges = 0;
-		adjListsMap = new HashMap<Integer,ArrayList<Integer>>();
+		adjListsMap = new HashMap<GeographicPoint, ArrayList<GeographicPoint>>();
 		// TODO: Implement in this constructor in WEEK 3
 	}
 	
@@ -51,7 +51,6 @@ public class MapGraph {
 	 */
 	public int getNumVertices()
 	{
-
 		return numVertices;
 	}
 	
@@ -61,10 +60,7 @@ public class MapGraph {
 	 */
 	public Set<GeographicPoint> getVertices()
 	{
-		//TODO: Implement this method in WEEK 3
-		Set<GeographicPoint> retSet = new HashSet<GeographicPoint>();
-		
-		return retSet;
+		return adjListsMap.keySet();
 	}
 	
 	/**
@@ -85,23 +81,21 @@ public class MapGraph {
 	 * @return true if a node was added, false if it was not (the node
 	 * was already in the graph, or the parameter is null).
 	 */
+	//public boolean addVertex(GeographicPoint location)
 	public boolean addVertex(GeographicPoint location)
-	{
-		// TODO: Implement this method in WEEK 3
-		double x = location.getX();
-		double y = location.getY();
-		
-		/* point is there already// 
-		if (location == null | ){
+	{		
+		if (location == null | adjListsMap.containsKey(location)){
 			return false;
 		} else {
-			MyVertice Veretex = new MyVertice(x, y);
-			// add
-			return ture;
+			adjListsMap.put(location, new ArrayList<>());
+			numVertices ++;
+			return true;
 		}
-		*/
-		return false;
 	}
+	
+	
+	
+	
 	
 	/**
 	 * Adds a directed edge to the graph from pt1 to pt2.  
@@ -117,9 +111,15 @@ public class MapGraph {
 	 */
 	public void addEdge(GeographicPoint from, GeographicPoint to, String roadName,
 			String roadType, double length) throws IllegalArgumentException {
-
-		//TODO: Implement this method in WEEK 3
 		
+		// throw exceptions if input is not good
+		if (length < 0 | !adjListsMap.containsKey(from) | !adjListsMap.containsKey(to) |
+				from == null | to == null | roadName == null | roadType == null){
+			throw new IllegalArgumentException();
+		} else {
+			adjListsMap.get(from).add(to);
+			numEdges ++;
+		}
 	}
 	
 
@@ -221,31 +221,39 @@ public class MapGraph {
 		return null;
 	}
 	
-	
+	// for test only
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
 		
 		return s;
 	}
 	
+	
+	// for test only 
+	public void printVertex(){
+		for (GeographicPoint p: adjListsMap.keySet()){
+			System.out.println(p.x);
+		}
+	}
+	
+	// for test only
+	public getNeighbour(GeographicPoint location){
+		
+	}
+	
 	public static void main(String[] args)
 	{
 		
 		
-		
-		
-		
-		
-		System.out.print("Making a new map...");
-		MapGraph firstMap = new MapGraph();
-		System.out.print("DONE. \nLoading the map...");
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", firstMap);
-		System.out.println("DONE.");
-		
-		System.out.println(firstMap);
-		
 		// You can use this method for testing.  
-		
+		MapGraph firstMap = new MapGraph();
+		GeographicPoint point = new GeographicPoint(2.22, 6.55);
+		GeographicPoint point2 = new GeographicPoint(2.23, 6.45);
+		firstMap.addVertex(point);
+		firstMap.addVertex(point2);
+		System.out.println(firstMap);
+		firstMap.addEdge(point, point2, "test name",
+				"residential", 2);
 		
 		/* Here are some test cases you should try before you attempt 
 		 * the Week 3 End of Week Quiz, EVEN IF you score 100% on the 
