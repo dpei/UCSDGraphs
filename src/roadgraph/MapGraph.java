@@ -11,6 +11,7 @@ package roadgraph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -94,9 +95,6 @@ public class MapGraph {
 	}
 	
 	
-	
-	
-	
 	/**
 	 * Adds a directed edge to the graph from pt1 to pt2.  
 	 * Precondition: Both GeographicPoints have already been added to the graph
@@ -140,20 +138,83 @@ public class MapGraph {
 	 * 
 	 * @param start The starting location
 	 * @param goal The goal location
-	 * @param nodeSearched A hook for visualization.  See assignment instructions for how to use it.
+	 * @param nodeSearched A hook for visualization.  See assignment instructions 
+	 *   for how to use it.
 	 * @return The list of intersections that form the shortest (unweighted)
 	 *   path from start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> bfs(GeographicPoint start, 
-			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+			 					     GeographicPoint goal, 
+			 					     Consumer<GeographicPoint> nodeSearched)
 	{
-		// TODO: Implement this method in WEEK 3
-		
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
 
+		
+		
+		// Initiate a list of "visited" nodes 
+		// Initiate a list of "queue" that has all current nodes to be visited
+		// Initiate a list of "parent" HashMap
+		ArrayList<GeographicPoint> visited = new ArrayList<GeographicPoint>();
+		LinkedList<GeographicPoint> queue = new LinkedList<GeographicPoint>();
+		HashMap<GeographicPoint, GeographicPoint> parent = 
+				new HashMap<GeographicPoint, GeographicPoint>();
+		
+		// Put start into queue 
+		// Put start into visited
+		queue.add(start);
+		visited.add(start);
+		GeographicPoint curr = null;
+		
+		// While you queue list is not empty perform the following 
+		//    Curr = first node (geographic point) in current queue
+		//    If curr == G then return parent HashMap else:
+		//      For each of curr's neighbors, n, not in visited set:
+		//        Add n to visited set
+		//        Enqueue n onto the queue
+		//        Add curr as n's parent in parent map
+		while(!queue.isEmpty()){
+			curr = queue.remove(0);
+			if (curr == goal){
+				return findPath(start, goal, parent);
+			} else {
+				for (GeographicPoint neighbour:adjListsMap.get(curr)){
+					if (!visited.contains(neighbour)){
+						visited.add(neighbour);
+						queue.add(neighbour);
+						parent.put(neighbour, curr);
+					}
+				}
+			}
+		}
 		return null;
 	}
+	
+	
+	
+	/** Given a HashMap contains each node and its parent. This HashMap
+	 *  was generated using breath first search. 
+	 *  The goal is to find the path from start to goal 
+	 *  Input: HashMap
+	 *  Outout: a list from start to goal 
+	 * 
+	 */
+	
+	public List<GeographicPoint> findPath(GeographicPoint start, GeographicPoint goal, 
+										  HashMap<GeographicPoint,GeographicPoint> parent){
+		// Initiate variables
+		List<GeographicPoint> retList = new ArrayList<GeographicPoint>();
+		GeographicPoint curr =  goal;
+		retList.add(goal);
+		
+		while (curr != start){
+			curr = parent.get(curr);
+			retList.add(curr);
+		}
+		return retList;
+	}
+	
+	
 	
 
 	/** Find the path from start to goal using Dijkstra's algorithm
@@ -221,31 +282,26 @@ public class MapGraph {
 		return null;
 	}
 	
-	// for test only
+	// a helper method for test only
 	public String toString() {
 		String s = "\nGraph with " + numVertices + " vertices and " + numEdges + " edges.\n";
-		
 		return s;
 	}
 	
-	
-	// for test only 
-	public void printVertex(){
-		for (GeographicPoint p: adjListsMap.keySet()){
-			System.out.println(p.x);
-		}
-	}
-	
-	// for test only
-	public getNeighbour(GeographicPoint location){
 		
+	// for test only
+	public ArrayList<Double> getNeighbourX(GeographicPoint location){
+		ArrayList<Double> number = new ArrayList<Double>();
+		for (GeographicPoint lc : adjListsMap.get(location)){
+			number.add(lc.getX()); 
+		}
+		return number;
 	}
+	
 	
 	public static void main(String[] args)
 	{
-		
-		
-		// You can use this method for testing.  
+		//You can use this method for testing.  
 		MapGraph firstMap = new MapGraph();
 		GeographicPoint point = new GeographicPoint(2.22, 6.55);
 		GeographicPoint point2 = new GeographicPoint(2.23, 6.45);
