@@ -9,6 +9,7 @@ package roadgraph;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -149,7 +150,6 @@ public class MapGraph {
 	{
 		// Hook for visualization.  See writeup.
 		//nodeSearched.accept(next.getLocation());
-
 		
 		
 		// Initiate a list of "visited" nodes 
@@ -207,10 +207,12 @@ public class MapGraph {
 		GeographicPoint curr =  goal;
 		retList.add(goal);
 		
+		// Find a path from goal to start
 		while (curr != start){
 			curr = parent.get(curr);
 			retList.add(curr);
 		}
+		Collections.reverse(retList);
 		return retList;
 	}
 	
@@ -302,14 +304,7 @@ public class MapGraph {
 	public static void main(String[] args)
 	{
 		//You can use this method for testing.  
-		MapGraph firstMap = new MapGraph();
-		GeographicPoint point = new GeographicPoint(2.22, 6.55);
-		GeographicPoint point2 = new GeographicPoint(2.23, 6.45);
-		firstMap.addVertex(point);
-		firstMap.addVertex(point2);
-		System.out.println(firstMap);
-		firstMap.addEdge(point, point2, "test name",
-				"residential", 2);
+		
 		
 		/* Here are some test cases you should try before you attempt 
 		 * the Week 3 End of Week Quiz, EVEN IF you score 100% on the 
