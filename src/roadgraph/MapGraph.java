@@ -133,7 +133,9 @@ public class MapGraph {
 		// Dummy variable for calling the search algorithms
         Consumer<GeographicPoint> temp = (x) -> {};
         return bfs(start, goal, temp);
+        
 	}
+	
 	
 	/** Find the path from start to goal using breadth first search
 	 * 
@@ -144,12 +146,15 @@ public class MapGraph {
 	 * @return The list of intersections that form the shortest (unweighted)
 	 *   path from start to goal (including both start and goal).
 	 */
+	//
+	//
 	public List<GeographicPoint> bfs(GeographicPoint start, 
-			 					     GeographicPoint goal, 
-			 					     Consumer<GeographicPoint> nodeSearched)
+			 					     GeographicPoint goal,
+			 					    Consumer<GeographicPoint> nodeSearched)
 	{
+	
 		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
+		
 		
 		
 		// Initiate a list of "visited" nodes 
@@ -175,8 +180,14 @@ public class MapGraph {
 		//        Add curr as n's parent in parent map
 		while(!queue.isEmpty()){
 			curr = queue.remove(0);
-			if (curr == goal){
+			nodeSearched.accept(curr);
+			//System.out.println("Look at curr"+curr);
+			
+			if (curr.getX() == goal.getX() & curr.getY() == goal.getY()){
 				return findPath(start, goal, parent);
+				
+				//System.out.println("Start is: "+start+" goal is: "+ goal +findPath(start, goal, parent));
+
 			} else {
 				for (GeographicPoint neighbour:adjListsMap.get(curr)){
 					if (!visited.contains(neighbour)){
@@ -187,7 +198,14 @@ public class MapGraph {
 				}
 			}
 		}
+		/*
+		for (GeographicPoint key:parent.keySet()){
+			System.out.println(key+" parent: "+parent.get(key));
+			
+		}
+		*/
 		return null;
+		//System.out.println("naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 	}
 	
 	

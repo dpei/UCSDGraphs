@@ -3,7 +3,7 @@ package roadgraph;
 
 
 import roadgraph.MyVertice;
-/** Used in MapGraph class
+/** Not Used in MapGraph class yet
  * 
  * @created: June 2017
  * @author: Dong Pei

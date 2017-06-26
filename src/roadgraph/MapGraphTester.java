@@ -134,13 +134,15 @@ public class MapGraphTester {
 		assertEquals("a regular case", result2, firstMap.findPath(point2, point2, test));
 		
 		
+		
+		
+		
 	}
 	
 	
 	
 	@Test
 	public void testBfs(){
-		
 		ArrayList<GeographicPoint> result1 = new ArrayList<GeographicPoint>();
 		result1.add(point2);
 		result1.add(point3);
@@ -154,30 +156,34 @@ public class MapGraphTester {
 		assertEquals("return one step", result2, firstMap.bfs(point2, point2));
 		
 		
-		
+		/* for debug, turns out the object should use getX()==getX() & getY()==getY() for comparison
 		//point2 = new GeographicPoint(2.23, 6.45);
 		//point = new GeographicPoint(2.22, 6.55);
-		
 		GeographicPoint testStart = new GeographicPoint(2.23, 6.45);
 		GeographicPoint testEnd = new GeographicPoint(2.22, 6.55);
+		System.out.println(firstMap.bfs(point2, point));
+		System.out.println(firstMap.bfs(testStart,testEnd));
 		
+		System.out.println("new point: "+ firstMap.bfs(testEnd,testStart));
 		System.out.println("new point: "+ firstMap.bfs(testStart,testEnd));
 		System.out.println("old point: "+ firstMap.bfs(point2, point));
+	
 		
 		// System.out.println(firstMap.bfs(point6, point2));
 		
-		/*
-		MapGraph simpleTestMap = new MapGraph();
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
-		
-		System.out.println(simpleTestMap);
-		GeographicPoint testStart = new GeographicPoint(4.0, 1.0);
-		GeographicPoint testEnd = new GeographicPoint(5.0, 1.0);
-		List<GeographicPoint> testroute = simpleTestMap.bfs(testStart,testEnd);
 		System.out.println(testroute);
-		*/
+		
 		//System.out.println(firstMap.getNeighbourX(point2));
 		//System.out.println(simpleTestMap.getNeighbourX(testEnd));
+		
+		*/
+		
+		MapGraph simpleTestMap = new MapGraph();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
+		//System.out.println(simpleTestMap);
+		GeographicPoint testStart = new GeographicPoint(1.0, 1.0);
+		GeographicPoint testEnd = new GeographicPoint(8.0, -1.0);
+		assertEquals("import simple test map provided by course", 4, simpleTestMap.bfs(testStart,testEnd).size());
 		
 	}
 	
