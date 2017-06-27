@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -187,4 +188,16 @@ public class MapGraphTester {
 		
 	}
 	
+	@Test
+	public void testPriorityQueue(){
+		PriorityQueue<GeographicPoint> queue = new PriorityQueue<GeographicPoint>();
+		queue.add(point);
+		queue.add(point2);
+		queue.add(point3);
+		queue.add(point6);
+        while (queue.size() != 0)
+        {
+            System.out.println(queue.remove());
+        }
+	}
 }

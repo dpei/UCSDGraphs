@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -160,7 +161,7 @@ public class MapGraph {
 		// Initiate a list of "visited" nodes 
 		// Initiate a list of "queue" that has all current nodes to be visited
 		// Initiate a list of "parent" HashMap
-		ArrayList<GeographicPoint> visited = new ArrayList<GeographicPoint>();
+		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		LinkedList<GeographicPoint> queue = new LinkedList<GeographicPoint>();
 		HashMap<GeographicPoint, GeographicPoint> parent = 
 				new HashMap<GeographicPoint, GeographicPoint>();
@@ -262,13 +263,56 @@ public class MapGraph {
 	public List<GeographicPoint> dijkstra(GeographicPoint start, 
 										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
-		// TODO: Implement this method in WEEK 4
-
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
+		
+		PriorityQueue<MyVertice> queue = new PriorityQueue<MyVertice>();
+		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		HashMap<GeographicPoint, GeographicPoint> parent = 
+				new HashMap<GeographicPoint, GeographicPoint>();
+		
+		MyVertice myStart = new MyVertice(start.getX(), start.getY());
+		myStart.setDistanceToStart(0);
+		queue.add(myStart);
+		
+		while(!queue.isEmpty()){
+			MyVertice myCurr = queue.poll();
+			GeographicPoint curr = new GeographicPoint(myCurr.getX(), myCurr.getY());
+			if (!visited.contains(curr)){
+				visited.add(curr);
+				if (curr.getX() == goal.getX() & curr.getY() == goal.getY()){
+					return findPath(start, goal, parent);
+				} else {
+					for (GeographicPoint neighbour:adjListsMap.get(curr)){
+						if (!visited.contains(neighbour)){
+							double neighbourDistance = myCurr.getDistanceToStart()+edgeDistance;
+							if(neighbourDistance < myCurr.x){
+								parent.put(neighbour, curr);
+								MyVertice myNeighbour = new MyVertice(neighbour.getX(), neighbour.getY());
+								myNeighbour.setDistanceToStart(neighbourDistance);
+								queue.add(myNeighbour);
+							}
+						}
+					}
+				}
+			}
+		}	
+		return null;
+	}	
+		/*
+		//System.out.println("Look at curr"+curr);
+		//System.out.println("Start is: "+start+" goal is: "+ goal +findPath(start, goal, parent));
+		
+		
+		for (GeographicPoint key:parent.keySet()){
+			System.out.println(key+" parent: "+parent.get(key));
+			
+		}
 		
 		return null;
-	}
+		//System.out.println("naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		*/
+		
+		
+	
 
 	/** Find the path from start to goal using A-Star search
 	 * 
@@ -317,6 +361,7 @@ public class MapGraph {
 		}
 		return number;
 	}
+	
 	
 	
 	public static void main(String[] args)
