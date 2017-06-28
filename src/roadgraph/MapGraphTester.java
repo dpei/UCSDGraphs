@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.PriorityQueue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,13 +48,13 @@ public class MapGraphTester {
 		firstMap.addVertex(point6);
 		
 		firstMap.addEdge(point, point2, "test name",
-				"residential", 2);
+				"residential", 2.2);
 		firstMap.addEdge(point2, point3, "test name",
-				"residential", 2);
+				"residential", 2.3);
 		firstMap.addEdge(point3, point, "test name",
-				"residential", 2);
+				"residential", 2.5);
 		firstMap.addEdge(point2, point6, "test name",
-				"residential", 2);
+				"residential", 2.5);
 		
 		
 		
@@ -112,7 +109,7 @@ public class MapGraphTester {
 	}
 	
 	
-	
+	/* comment out because of the method changed to private
 	@Test
 	public void testFindPath(){
 		HashMap<GeographicPoint, GeographicPoint> test = new HashMap<GeographicPoint, GeographicPoint>();
@@ -133,13 +130,8 @@ public class MapGraphTester {
 		ArrayList<GeographicPoint> result2 = new ArrayList<GeographicPoint>();
 		result2.add(point2);
 		assertEquals("a regular case", result2, firstMap.findPath(point2, point2, test));
-		
-		
-		
-		
-		
 	}
-	
+	*/
 	
 	
 	@Test
@@ -188,16 +180,26 @@ public class MapGraphTester {
 		
 	}
 	
+	
+	/* Comment out because the method changed to private
 	@Test
-	public void testPriorityQueue(){
-		PriorityQueue<GeographicPoint> queue = new PriorityQueue<GeographicPoint>();
-		queue.add(point);
-		queue.add(point2);
-		queue.add(point3);
-		queue.add(point6);
-        while (queue.size() != 0)
-        {
-            System.out.println(queue.remove());
-        }
+	public void testEdgeDistance(){
+		assertEquals("test the total number of insections", 2.2, firstMap.getEdgeDistance(point, point2), 0.0000001);
+		System.out.println(firstMap.getEdgeDistance(point3, point));
 	}
+	*/
+	
+	
+	
+	
+	@Test
+	public void testDijkstra(){
+		System.out.println(firstMap.dijkstra(point, point2));
+		
+		
+		//firstMap.dijkstra(point, point3);
+		//firstMap.dijkstra(point, point6);
+		
+	}
+	
 }

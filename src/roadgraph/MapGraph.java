@@ -35,7 +35,7 @@ public class MapGraph {
 	private int numVertices;
 	private int numEdges;
 	private HashMap<GeographicPoint, ArrayList<GeographicPoint>> adjListsMap;
-	
+	private HashSet<MyEdge> edges;
 	
 	/** 
 	 * Create a new empty MapGraph 
@@ -45,7 +45,7 @@ public class MapGraph {
 		numVertices = 0;
 		numEdges = 0;
 		adjListsMap = new HashMap<GeographicPoint, ArrayList<GeographicPoint>>();
-		// TODO: Implement in this constructor in WEEK 3
+		edges = new HashSet<MyEdge>();
 	}
 	
 	/**
@@ -119,6 +119,7 @@ public class MapGraph {
 		} else {
 			adjListsMap.get(from).add(to);
 			numEdges ++;
+			edges.add(new MyEdge(from, to, roadName, length));
 		}
 	}
 	
@@ -219,7 +220,7 @@ public class MapGraph {
 	 * 
 	 */
 	
-	public List<GeographicPoint> findPath(GeographicPoint start, GeographicPoint goal, 
+	private List<GeographicPoint> findPath(GeographicPoint start, GeographicPoint goal, 
 										  HashMap<GeographicPoint,GeographicPoint> parent){
 		// Initiate variables
 		List<GeographicPoint> retList = new ArrayList<GeographicPoint>();
@@ -235,6 +236,23 @@ public class MapGraph {
 		return retList;
 	}
 	
+	
+	
+	/** Given a start and end GeographicPoint object, return the distance between the two
+	 *  If there is no edge, return null. This method takes advantage of the edge HashSet<MyEdge> 
+	 *  object
+	 *  Input: start and end GeographicPoint object
+	 *  Outout: distance from the "start" object to the "end" object.  
+	 *  Change to private after testing
+	 */
+	private double getEdgeDistance(GeographicPoint start, GeographicPoint goal){
+		for (MyEdge edge : edges){
+			if (edge.getStart().equals(start) & edge.getEnd().equals(goal)){
+				return edge.getLength();
+			}
+		}
+		return -1.0;
+	}
 	
 	
 
@@ -261,9 +279,9 @@ public class MapGraph {
 	 *   start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> dijkstra(GeographicPoint start, 
-										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+										  GeographicPoint goal, 
+										  Consumer<GeographicPoint> nodeSearched)
 	{
-		
 		PriorityQueue<MyVertice> queue = new PriorityQueue<MyVertice>();
 		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
 		HashMap<GeographicPoint, GeographicPoint> parent = 
@@ -273,7 +291,14 @@ public class MapGraph {
 		myStart.setDistanceToStart(0);
 		queue.add(myStart);
 		
-		while(!queue.isEmpty()){
+		System.out.println("Below is in the loop");
+		int i=0;
+		
+		
+		
+		while(!queue.isEmpty() & i<10){
+			System.out.println("This is loop: "+i+". current queue element: "+ queue.peek()+" , quene size is"+ queue.size());
+			i++;
 			MyVertice myCurr = queue.poll();
 			GeographicPoint curr = new GeographicPoint(myCurr.getX(), myCurr.getY());
 			if (!visited.contains(curr)){
@@ -283,18 +308,22 @@ public class MapGraph {
 				} else {
 					for (GeographicPoint neighbour:adjListsMap.get(curr)){
 						if (!visited.contains(neighbour)){
-							double neighbourDistance = myCurr.getDistanceToStart()+edgeDistance;
-							if(neighbourDistance < myCurr.x){
-								parent.put(neighbour, curr);
+							double edgeDistance =  getEdgeDistance(curr, neighbour);
+							// make sure the distance is larger than 0
+							if (edgeDistance > 0){
+								double neighbourDistance = myCurr.getDistanceToStart() + edgeDistance;
 								MyVertice myNeighbour = new MyVertice(neighbour.getX(), neighbour.getY());
-								myNeighbour.setDistanceToStart(neighbourDistance);
-								queue.add(myNeighbour);
+								if(neighbourDistance < myNeighbour.getDistanceToStart()){
+									parent.put(neighbour, curr);
+									myNeighbour.setDistanceToStart(neighbourDistance);
+									queue.add(myNeighbour);
+								}
 							}
 						}
 					}
 				}
 			}
-		}	
+		}
 		return null;
 	}	
 		/*
@@ -307,7 +336,7 @@ public class MapGraph {
 			
 		}
 		
-		return null;
+		
 		//System.out.println("naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 		*/
 		

@@ -2,8 +2,9 @@ package roadgraph;
 
 
 
+import geography.GeographicPoint;
 import roadgraph.MyVertice;
-/** Not Used in MapGraph class yet
+/** Used in MapGraph class yet
  * 
  * @created: June 2017
  * @author: Dong Pei
@@ -15,21 +16,29 @@ import roadgraph.MyVertice;
 
 public class MyEdge {
 	
-	private MyVertice start;
-	private MyVertice end;
+	private GeographicPoint start;
+	private GeographicPoint end;
 	private String name;
+	private double length;
 	
 	
-	public MyEdge(){
-		start = new MyVertice(1,1);
-		end = new MyVertice(2,2);
-		name = "zhonghua";
+	public MyEdge(GeographicPoint S, GeographicPoint E, String N, double L){
+		start = S;
+		end = E;
+		name = N;
+		length = L;
 	}	
 	
-	
-	
-	public String getName(){
-		return name;
+
+	public double getLength(){
+		return length;
 	}
 	
+	public GeographicPoint getStart(){
+		return start;
+	}
+	
+	public GeographicPoint getEnd(){
+		return end;
+	}
 }
