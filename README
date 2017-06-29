@@ -13,7 +13,23 @@
 / Modified on June 2017
 /
 / Date: 12/16/2015
-/-------------------------------------------------------------------------
+/
+
+--------------------------------------------------------[ What’s done by Dong]-
+
+1. Implemented bfs (unweighted), dijkstra (weighted) and A* (weighted) algorithm 
+in roadmap/MapGraph.java for route-finding problems in a map. (basicgraph.Graph.java
+basicgraph.GraphAdjList.java and basicgraph.GraphAdjMatrix.java)
+
+2. Added additional classes (MyVertice.java and MyEdge.java) to help implementation. 
+
+3. Generated JUnit test cases for each algorithm.
+
+4. Implement methods to represent a graph with both Adjacency list and Adjacency matrix.
+Compared efficiency between two data structures.
+
+
+
 
 ---------------------------------------------------------[ DESCRIPTION ]--
 
