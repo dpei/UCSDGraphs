@@ -23,16 +23,13 @@ import java.util.PriorityQueue;
 public class MyVertice extends GeographicPoint implements Comparable<MyVertice>{
 	
 	
-	private double latitude;
-	private double lontitude;
 	private double distanceToStart;
 	
 	public MyVertice(double X, double Y){
 		super(X, Y);
-		distanceToStart = 100000000000.0;
+		//distanceToStart = 100000000000.0;
 		//distanceToStart = Double.POSITIVE_INFINITY;
 	}
-	
 	
 	public void setDistanceToStart(double distance){
 		distanceToStart = distance;

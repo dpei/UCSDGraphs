@@ -29,8 +29,9 @@ public class MapGraphTester {
 	GeographicPoint point3;
 	GeographicPoint point6;
 	
-	//MapGraph simpleTestMap;
-	
+	MapGraph simpleTestMap;
+	GeographicPoint testStart;
+	GeographicPoint testEnd;
 	
 	@Before
 	public void setUp() throws Exception 
@@ -56,6 +57,9 @@ public class MapGraphTester {
 		firstMap.addEdge(point2, point6, "test name",
 				"residential", 2.5);
 		
+		
+		simpleTestMap = new MapGraph();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
 		
 		
 		// initiate a test map prepared by course
@@ -171,11 +175,10 @@ public class MapGraphTester {
 		
 		*/
 		
-		MapGraph simpleTestMap = new MapGraph();
-		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
+		
 		//System.out.println(simpleTestMap);
-		GeographicPoint testStart = new GeographicPoint(1.0, 1.0);
-		GeographicPoint testEnd = new GeographicPoint(8.0, -1.0);
+		testStart = new GeographicPoint(1.0, 1.0);
+		testEnd = new GeographicPoint(8.0, -1.0);
 		assertEquals("import simple test map provided by course", 4, simpleTestMap.bfs(testStart,testEnd).size());
 		
 	}
@@ -190,15 +193,31 @@ public class MapGraphTester {
 	*/
 	
 	
-	
-	
 	@Test
 	public void testDijkstra(){
-		System.out.println(firstMap.dijkstra(point, point2));
+		
+		ArrayList<GeographicPoint> result1 = new ArrayList<GeographicPoint>();
+		result1.add(point);
+		result1.add(point2);
+		assertEquals("basic case", result1, firstMap.dijkstra(point, point2));
+		result1.add(point3);
+		assertEquals("two step case", result1, firstMap.dijkstra(point, point3));
+		
+		assertEquals("two step case with newly defined point", result1, 
+					firstMap.dijkstra(new GeographicPoint(2.22, 6.55), new GeographicPoint(2.24, 6.45)));
+		
+		// a little complicated example
+		testStart = new GeographicPoint(1.0, 1.0);
+		testEnd = new GeographicPoint(8.0, -1.0);
+		result1.clear();
+		result1.add(new GeographicPoint(1.0, 1.0));
+		result1.add(new GeographicPoint(4.0, 1.0));
+		result1.add(new GeographicPoint(5.0, 1.0));
+		result1.add(new GeographicPoint(6.5, 0.0));
+		result1.add(new GeographicPoint(8.0, -1.0));
+		assertEquals("a more complicated test", result1, simpleTestMap.dijkstra(testStart,testEnd));
 		
 		
-		//firstMap.dijkstra(point, point3);
-		//firstMap.dijkstra(point, point6);
 		
 	}
 	

@@ -167,6 +167,9 @@ public class MapGraph {
 		HashMap<GeographicPoint, GeographicPoint> parent = 
 				new HashMap<GeographicPoint, GeographicPoint>();
 		
+		
+		
+		
 		// Put start into queue 
 		// Put start into visited
 		queue.add(start);
@@ -228,7 +231,7 @@ public class MapGraph {
 		retList.add(goal);
 		
 		// Find a path from goal to start
-		while (curr != start){
+		while (!curr.equals(start)){
 			curr = parent.get(curr);
 			retList.add(curr);
 		}
@@ -287,23 +290,46 @@ public class MapGraph {
 		HashMap<GeographicPoint, GeographicPoint> parent = 
 				new HashMap<GeographicPoint, GeographicPoint>();
 		
-		MyVertice myStart = new MyVertice(start.getX(), start.getY());
+		// Initiate all vertices so that they all have a positive infinity length to start
+		HashSet<MyVertice> vertices = new HashSet<MyVertice>(); 
+		for (GeographicPoint point : adjListsMap.keySet()){
+			MyVertice vt = new MyVertice(point.getX(), point.getY());
+			vt.setDistanceToStart(Double.POSITIVE_INFINITY);
+			vertices.add(vt);
+		}
+		
+		// add start into queue
+		MyVertice myStart = getVertice(start, vertices);
 		myStart.setDistanceToStart(0);
 		queue.add(myStart);
 		
-		System.out.println("Below is in the loop");
-		int i=0;
+		
+		//System.out.println("Below is in the loop");
+		//int i=0;
 		
 		
 		
-		while(!queue.isEmpty() & i<10){
-			System.out.println("This is loop: "+i+". current queue element: "+ queue.peek()+" , quene size is"+ queue.size());
-			i++;
+		while(!queue.isEmpty()){
+			
+			//System.out.println("This is loop: "+i+". current queue element: "+ queue.peek()+" , quene size is"+ queue.size());
+			//i++;
 			MyVertice myCurr = queue.poll();
 			GeographicPoint curr = new GeographicPoint(myCurr.getX(), myCurr.getY());
+			
+			// count visited nodes
+			System.out.println(curr);
+			nodeSearched.accept(curr);
+			
+			
 			if (!visited.contains(curr)){
 				visited.add(curr);
-				if (curr.getX() == goal.getX() & curr.getY() == goal.getY()){
+				if (curr.equals(goal)){
+					//System.out.println();
+					//System.out.println("Find goal Final parent map: ");
+					//for (GeographicPoint p:parent.keySet()){
+					//	System.out.println(parent.get(p)+" to "+p);
+					//}
+					
 					return findPath(start, goal, parent);
 				} else {
 					for (GeographicPoint neighbour:adjListsMap.get(curr)){
@@ -312,35 +338,54 @@ public class MapGraph {
 							// make sure the distance is larger than 0
 							if (edgeDistance > 0){
 								double neighbourDistance = myCurr.getDistanceToStart() + edgeDistance;
-								MyVertice myNeighbour = new MyVertice(neighbour.getX(), neighbour.getY());
-								if(neighbourDistance < myNeighbour.getDistanceToStart()){
+								
+								// find the MyVertice node that has the same value as "neighbour"  
+								MyVertice curNei = getVertice(neighbour, vertices);
+								double curNeiDist = curNei.getDistanceToStart();
+								
+								if(neighbourDistance < curNeiDist){
 									parent.put(neighbour, curr);
-									myNeighbour.setDistanceToStart(neighbourDistance);
-									queue.add(myNeighbour);
+									curNei.setDistanceToStart(neighbourDistance);
+									queue.add(curNei);
 								}
 							}
 						}
 					}
+					/*
+					System.out.println();
+					System.out.println("After one more loop, The HashMap is: ");
+					System.out.println(parent.size());
+					for (GeographicPoint p:parent.keySet()){
+						System.out.println(parent.get(p)+" to "+p);
+					}
+					System.out.println("The queue is: ");
+					System.out.println(queue.size());
+					System.out.println(queue);
+					*/
 				}
 			}
 		}
 		return null;
-	}	
-		/*
-		//System.out.println("Look at curr"+curr);
-		//System.out.println("Start is: "+start+" goal is: "+ goal +findPath(start, goal, parent));
+	}
 		
 		
-		for (GeographicPoint key:parent.keySet()){
-			System.out.println(key+" parent: "+parent.get(key));
-			
+	
+	/**
+	 * helper method to find the right MyVertice based on GeographicPoint object. This method is used for
+	 * @param input is a GeographicPoint 
+	 * @param output is a MyVertice object that has same value of x and y as input GeographicPoint
+	 * @return the right MyVertice object
+	 */
+	
+	public MyVertice getVertice(GeographicPoint input, HashSet<MyVertice> vertices){
+		for (MyVertice vt: vertices){
+			if (vt.getX() == input.getX() & vt.getY() == input.getY()){
+				return vt;
+			}
 		}
-		
-		
-		//System.out.println("naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-		*/
-		
-		
+		return null;
+	}
+	
 	
 
 	/** Find the path from start to goal using A-Star search
