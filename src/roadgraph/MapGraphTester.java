@@ -215,9 +215,28 @@ public class MapGraphTester {
 		result1.add(new GeographicPoint(5.0, 1.0));
 		result1.add(new GeographicPoint(6.5, 0.0));
 		result1.add(new GeographicPoint(8.0, -1.0));
+		System.out.println("Test 1 using simpletest: Dijkstra should be 9 and AStar should be 5");
 		assertEquals("a more complicated test", result1, simpleTestMap.dijkstra(testStart,testEnd));
+		assertEquals("a more complicated test", result1, simpleTestMap.aStarSearch(testStart,testEnd));
 		
 		
+		
+		// The methods below are used to test if two algorithm explores expected nodes in the graph
+		MapGraph testMap = new MapGraph();
+		GraphLoader.loadRoadMap("data/maps/utc.map", testMap);
+		
+		// Another simple test using real data
+		testStart = new GeographicPoint(32.869423, -117.220917);
+		testEnd = new GeographicPoint(32.869255, -117.216927);
+		System.out.println("Test 2 using utc: Dijkstra should be 13 and AStar should be 5");
+		assertEquals(testMap.dijkstra(testStart,testEnd), testMap.aStarSearch(testStart,testEnd));
+		
+		
+		// A slightly more complex test using real data
+		testStart = new GeographicPoint(32.8674388, -117.2190213);
+		testEnd = new GeographicPoint(32.8697828, -117.2244506);
+		System.out.println("Test 3 using utc: Dijkstra should be 37 and AStar should be 10");
+		assertEquals(testMap.dijkstra(testStart,testEnd), testMap.aStarSearch(testStart,testEnd));
 		
 	}
 	

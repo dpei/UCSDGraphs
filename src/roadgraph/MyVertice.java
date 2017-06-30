@@ -1,7 +1,7 @@
 package roadgraph;
 
 
-/**A Vertice class used for MapGraph
+/**A Vertice class used for MapGraph. This class is used for 
  * 
  * 
  * 
@@ -22,26 +22,38 @@ import java.util.PriorityQueue;
 
 public class MyVertice extends GeographicPoint implements Comparable<MyVertice>{
 	
-	
+	// this variable is used to store the real distance between 
 	private double distanceToStart;
+	// this variable is used to store the heuristic estimated cost distance 
+	// (i.e. the conserved estimation, or say the straight line distance between two point)
+	private double distanceSum;
 	
 	public MyVertice(double X, double Y){
 		super(X, Y);
-		//distanceToStart = 100000000000.0;
-		//distanceToStart = Double.POSITIVE_INFINITY;
 	}
 	
 	public void setDistanceToStart(double distance){
 		distanceToStart = distance;
 	}
 	
+	
+	
 	public double getDistanceToStart(){
 		return distanceToStart;
 	}
+
+	
+	public void setDistanceSum(double distance){
+		distanceSum = distance;
+	}
+	public double getDistanceSum(){
+		return distanceSum;
+	}
+	
 	
 	@Override
 	public int compareTo(MyVertice y){
-		double dist = this.getDistanceToStart() - y.getDistanceToStart();
+		double dist = this.getDistanceSum() - y.getDistanceSum();
 		if (dist>0){
 			return 1;
 		} else if(dist==0) {

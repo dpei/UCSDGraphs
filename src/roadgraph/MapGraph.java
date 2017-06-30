@@ -294,17 +294,20 @@ public class MapGraph {
 		HashSet<MyVertice> vertices = new HashSet<MyVertice>(); 
 		for (GeographicPoint point : adjListsMap.keySet()){
 			MyVertice vt = new MyVertice(point.getX(), point.getY());
-			vt.setDistanceToStart(Double.POSITIVE_INFINITY);
+			
+			// Actually this should be the distance to start. I use distance to sum
+			// because A* method need to compare sum. So all distance to start in this
+			// method is not set.
+			vt.setDistanceSum(Double.POSITIVE_INFINITY);
 			vertices.add(vt);
 		}
 		
 		// add start into queue
 		MyVertice myStart = getVertice(start, vertices);
-		myStart.setDistanceToStart(0);
+		myStart.setDistanceSum(0);
 		queue.add(myStart);
 		
-		
-		//System.out.println("Below is in the loop");
+		System.out.println("dijkstra visited the following nodes: ");
 		//int i=0;
 		
 		
@@ -337,15 +340,15 @@ public class MapGraph {
 							double edgeDistance =  getEdgeDistance(curr, neighbour);
 							// make sure the distance is larger than 0
 							if (edgeDistance > 0){
-								double neighbourDistance = myCurr.getDistanceToStart() + edgeDistance;
+								double neighbourDistance = myCurr.getDistanceSum() + edgeDistance;
 								
 								// find the MyVertice node that has the same value as "neighbour"  
 								MyVertice curNei = getVertice(neighbour, vertices);
-								double curNeiDist = curNei.getDistanceToStart();
+								double curNeiDist = curNei.getDistanceSum();
 								
 								if(neighbourDistance < curNeiDist){
 									parent.put(neighbour, curr);
-									curNei.setDistanceToStart(neighbourDistance);
+									curNei.setDistanceSum(neighbourDistance);
 									queue.add(curNei);
 								}
 							}
@@ -410,13 +413,69 @@ public class MapGraph {
 	 *   start to goal (including both start and goal).
 	 */
 	public List<GeographicPoint> aStarSearch(GeographicPoint start, 
-											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
+											 GeographicPoint goal, 
+											 Consumer<GeographicPoint> nodeSearched)
 	{
-		// TODO: Implement this method in WEEK 4
+		PriorityQueue<MyVertice> queue = new PriorityQueue<MyVertice>();
+		HashSet<GeographicPoint> visited = new HashSet<GeographicPoint>();
+		HashMap<GeographicPoint, GeographicPoint> parent = 
+				new HashMap<GeographicPoint, GeographicPoint>();
 		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
+		HashSet<MyVertice> vertices = new HashSet<MyVertice>(); 
+		for (GeographicPoint point : adjListsMap.keySet()){
+			MyVertice vt = new MyVertice(point.getX(), point.getY());
+			vt.setDistanceToStart(Double.POSITIVE_INFINITY);
+			// in A* algorithm, setDistanceSum sets f(n)=g(n)+h(n).			
+			vt.setDistanceSum(Double.POSITIVE_INFINITY);
+			vertices.add(vt);
+		}
 		
+		MyVertice myStart = getVertice(start, vertices);
+		// in A* algorithm. setDistanceToStart() sets f(n)=g(n)+h(n)
+		myStart.setDistanceToStart(0);
+		myStart.setDistanceSum(start.distance(goal));
+		queue.add(myStart);
+		
+		System.out.println("A* visited the following nodes: ");
+		
+		
+		while(!queue.isEmpty()){
+			
+			MyVertice myCurr = queue.poll();
+			GeographicPoint curr = new GeographicPoint(myCurr.getX(), myCurr.getY());
+			
+			// count visited nodes
+			System.out.println(curr);
+			nodeSearched.accept(curr);
+			
+			
+			if (!visited.contains(curr)){
+				visited.add(curr);
+				if (curr.equals(goal)){
+					return findPath(start, goal, parent);
+				} else {
+					for (GeographicPoint neighbour:adjListsMap.get(curr)){
+						if (!visited.contains(neighbour)){
+							double neiEdgeDistance = getEdgeDistance(curr, neighbour);
+							double neiGoalDistance = neighbour.distance(goal);
+							
+							if (neiEdgeDistance > 0){
+								double neiToStartDistance = myCurr.getDistanceToStart() + neiEdgeDistance;
+								double neiSumDistance = neiToStartDistance + neiGoalDistance; 
+								MyVertice curNei = getVertice(neighbour, vertices);
+								
+								if(neiSumDistance < curNei.getDistanceSum()){
+									parent.put(neighbour, curr);
+									curNei.setDistanceToStart(neiToStartDistance);
+									curNei.setDistanceSum(neiSumDistance);
+									queue.add(curNei);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 		return null;
 	}
 	

@@ -22,7 +22,8 @@
 in roadmap/MapGraph.java for route-finding problems in a map. (basicgraph.Graph.java
 basicgraph.GraphAdjList.java and basicgraph.GraphAdjMatrix.java)
 
-2. Added additional classes (MyVertice.java and MyEdge.java) to help implementation. 
+2. Added additional classes (MyVertice.java and MyEdge.java) to support algorithm 
+implementation. 
 
 3. Generated JUnit test cases for each algorithm.
 
